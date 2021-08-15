@@ -1,0 +1,9 @@
+.w-full {
+  width: 100%;
+}
+.flex {
+  display: flex;
+}
+.flex-end {
+  justify-content: flex-end;
+}
