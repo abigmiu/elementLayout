@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <miu-filter :configModel="filterModel" />
+    <miu-filter :configModel="filterModel" @filter="onFilter" />
   </div>
 </template>
 
@@ -70,6 +70,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    onFilter(filterData) {
+      console.log(filterData);
+    },
   },
 };
 </script>

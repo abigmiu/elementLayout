@@ -1,12 +1,12 @@
 <template>
   <el-card>
-    <el-form>
+    <el-form ref="filterForm" :model="filterData">
       <el-form-item>
         <div class="flex flex-end">
-          <el-button type="primary">
+          <el-button type="primary" @click="submit">
             搜索
           </el-button>
-          <el-button>
+          <el-button @click="reset">
             重置
           </el-button>
         </div>
@@ -14,7 +14,11 @@
 
       <el-row :gutter="20">
         <el-col :span="8" v-for="item in configModel" :key="item.value">
-          <el-form-item :label="item.label" label-width="80px">
+          <el-form-item
+            :label="item.label"
+            :prop="item.value"
+            label-width="80px"
+          >
             <!-- 文本输入框 -->
             <el-input
               v-model="filterData[item.value]"
@@ -43,6 +47,7 @@
               v-if="item.type === 'daterange'"
               v-model="filterData[item.value]"
               type="daterange"
+              value-format="timestamp"
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
@@ -69,6 +74,19 @@ export default {
     return {
       filterData: {},
     };
+  },
+
+  methods: {
+    // 搜索提交
+    submit() {
+      this.$emit("filter", this.filterData);
+    },
+
+    // 重置
+    reset() {
+      this.$refs.filterForm.resetFields();
+      this.submit();
+    },
   },
 };
 </script>
