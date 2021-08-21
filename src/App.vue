@@ -1,81 +1,84 @@
 <template>
   <div id="app">
-    <miu-filter :configModel="filterModel" @filter="onFilter" />
+    <miu-filter
+      :configModel="filterModel"
+      @filter="onFilter"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import Filter from "@/components/filter.vue";
+import HelloWorld from './components/HelloWorld.vue';
+import Filter from '@/components/filter.vue';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     HelloWorld,
-    MiuFilter: Filter,
+    MiuFilter: Filter
   },
   data() {
     return {
       filterModel: [
         {
-          label: "名字",
-          value: "name",
-          type: "text",
+          label: '名字',
+          value: 'name',
+          type: 'text'
         },
         {
-          label: "昵称",
-          value: "nickname",
-          type: "text",
-          placeholder: "在这里填写昵称",
+          label: '昵称',
+          value: 'nickname',
+          type: 'text',
+          placeholder: '在这里填写昵称'
         },
         {
-          label: "性别",
-          value: "sex",
-          type: "select",
+          label: '性别',
+          value: 'sex',
+          type: 'select',
           options: [
             {
-              label: "男",
-              value: "0",
+              label: '男',
+              value: '0'
             },
             {
-              label: "女",
-              value: "1",
-            },
-          ],
+              label: '女',
+              value: '1'
+            }
+          ]
         },
         {
-          label: "职业",
-          value: "job",
-          type: "select",
+          label: '职业',
+          value: 'job',
+          type: 'select',
           multiple: true,
           options: [
             {
-              label: "前端",
-              value: "front",
+              label: '前端',
+              value: 'front'
             },
             {
-              label: "后端",
-              value: "end",
+              label: '后端',
+              value: 'end'
             },
             {
-              label: "大数据",
-              value: "bigData",
-            },
-          ],
+              label: '大数据',
+              value: 'bigData'
+            }
+          ]
         },
         {
-          label: "日期",
-          value: "date",
-          type: "daterange",
-        },
-      ],
+          label: '日期',
+          value: 'date',
+          type: 'daterange'
+        }
+      ]
     };
   },
   methods: {
     onFilter(filterData) {
       console.log(filterData);
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -1,19 +1,12 @@
 <template>
   <el-card>
     <el-form ref="filterForm" :model="filterData">
-      <el-form-item>
-        <div class="flex flex-end">
-          <el-button type="primary" @click="submit">
-            搜索
-          </el-button>
-          <el-button @click="reset">
-            重置
-          </el-button>
-        </div>
-      </el-form-item>
-
       <el-row :gutter="20">
-        <el-col :span="8" v-for="item in configModel" :key="item.value">
+        <el-col
+          :span="8"
+          v-for="item in configModel"
+          :key="item.value"
+        >
           <el-form-item
             :label="item.label"
             :prop="item.value"
@@ -57,6 +50,15 @@
           </el-form-item>
         </el-col>
       </el-row>
+
+      <div class="flex flex-end">
+        <el-button @click="reset">
+          重置
+        </el-button>
+        <el-button type="primary" @click="submit">
+          搜索
+        </el-button>
+      </div>
     </el-form>
   </el-card>
 </template>
@@ -66,29 +68,67 @@ export default {
   props: {
     configModel: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
 
   data() {
     return {
-      filterData: {},
-    };
+      filterData: {}
+    }
+  },
+
+  created() {
+    this.initDefaultData()
   },
 
   methods: {
     // 搜索提交
     submit() {
-      this.$emit("filter", this.filterData);
+      this.$emit('filter', this.filterData)
     },
 
     // 重置
     reset() {
-      this.$refs.filterForm.resetFields();
-      this.submit();
+      this.$refs.filterForm.resetFields()
+      this.submit()
     },
-  },
-};
+
+    // 给filterData赋值默认值
+    initDefaultData() {
+      const stringType = ['text']
+      const arrayType = ['daterange']
+
+      /**
+       * @type string or array
+       */
+      const setDafault = (value, type) => {
+        if (type === 'array') {
+          this.$set(this.filterData, value, [])
+        } else if (type === 'string') {
+          this.$set(this.filterData, value, '')
+        }
+      }
+
+      this.configModel.forEach((configItem) => {
+        const { type, value } = configItem
+
+        if (stringType.includes(type)) {
+          setDafault(value, 'string')
+        } else if (arrayType.includes(type)) {
+          setDafault(value, 'array')
+        } else if (type === 'select') {
+          const { multiple } = configItem
+          if (!multiple) {
+            setDafault(value, 'string')
+          } else {
+            setDafault(value, 'array')
+          }
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style></style>
