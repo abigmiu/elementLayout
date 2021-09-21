@@ -5,16 +5,16 @@
         <el-col
           :span="8"
           v-for="item in configModel"
-          :key="item.value"
+          :key="item.field"
         >
           <el-form-item
             :label="item.label"
-            :prop="item.value"
+            :prop="item.field"
             label-width="80px"
           >
             <!-- 文本输入框 -->
             <el-input
-              v-model="filterData[item.value]"
+              v-model="filterData[item.field]"
               v-if="item.type === 'text'"
               :placeholder="item.placeholder"
             >
@@ -22,7 +22,7 @@
             <!-- 选择器 -->
             <el-select
               v-if="item.type === 'select'"
-              v-model="filterData[item.value]"
+              v-model="filterData[item.field]"
               :placeholder="item.placeholder"
               :multiple="item.multiple"
               class="w-full"
@@ -38,7 +38,7 @@
             <!-- 日期范围选择器 -->
             <el-date-picker
               v-if="item.type === 'daterange'"
-              v-model="filterData[item.value]"
+              v-model="filterData[item.field]"
               type="daterange"
               value-format="timestamp"
               range-separator="至"
@@ -102,27 +102,27 @@ export default {
       /**
        * @type string or array
        */
-      const setDafault = (value, type) => {
+      const setDafault = (field, type) => {
         if (type === 'array') {
-          this.$set(this.filterData, value, [])
+          this.$set(this.filterData, field, [])
         } else if (type === 'string') {
-          this.$set(this.filterData, value, '')
+          this.$set(this.filterData, field, '')
         }
       }
 
       this.configModel.forEach((configItem) => {
-        const { type, value } = configItem
+        const { type, field } = configItem
 
         if (stringType.includes(type)) {
-          setDafault(value, 'string')
+          setDafault(field, 'string')
         } else if (arrayType.includes(type)) {
-          setDafault(value, 'array')
+          setDafault(field, 'array')
         } else if (type === 'select') {
           const { multiple } = configItem
-          if (!multiple) {
-            setDafault(value, 'string')
+          if (multiple) {
+            setDafault(field, 'array')
           } else {
-            setDafault(value, 'array')
+            setDafault(field, 'string')
           }
         }
       })

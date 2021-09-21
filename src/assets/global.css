@@ -7,3 +7,9 @@
 .flex-end {
   justify-content: flex-end;
 }
+.justify-between {
+  justify-content: space-between;
+}
+.items-center {
+  align-items: center;
+}
