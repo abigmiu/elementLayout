@@ -9,7 +9,10 @@ import {
   Col,
   Option,
   DatePicker,
-  Button
+  Button,
+  Table,
+  TableColumn,
+  Pagination
 } from 'element-ui'
 
 Vue.use(Card)
@@ -22,3 +25,6 @@ Vue.use(Col)
 Vue.use(Option)
 Vue.use(DatePicker)
 Vue.use(Button)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Pagination)

@@ -52,10 +52,10 @@
       </el-row>
 
       <div class="flex flex-end">
-        <el-button @click="reset">
+        <el-button @click="reset" size="mini">
           重置
         </el-button>
-        <el-button type="primary" @click="submit">
+        <el-button type="primary" @click="submit" size="mini">
           搜索
         </el-button>
       </div>

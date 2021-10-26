@@ -4,18 +4,24 @@
       :configModel="filterModel"
       @filter="onFilter"
     />
+    <miu-table
+        v-bind="tableConfig"
+    >
+    </miu-table>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-import Filter from '@/components/filter.vue';
+import HelloWorld from './components/HelloWorld.vue'
+import Filter from '@/components/filter.vue'
+import Table from '@/components/table.vue'
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    MiuFilter: Filter
+    MiuFilter: Filter,
+    MiuTable: Table
   },
   data() {
     return {
@@ -71,15 +77,73 @@ export default {
           value: 'date',
           type: 'daterange'
         }
-      ]
-    };
+      ],
+      tableConfig: {
+        showSelection: true,
+        showPagination: true,
+        data: [
+          {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          },
+          {
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          },
+          {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          },
+          {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          },
+          {
+            date: '2016-05-08',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          },
+          {
+            date: '2016-05-06',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          },
+          {
+            date: '2016-05-07',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }
+        ],
+        model: [
+            {
+                label: '日期',
+                value: 'date',
+                type: 'text',
+            },
+            {
+                label: '名字',
+                value: 'name',
+                type: 'text',
+            },
+            {
+                label: '地址',
+                value: 'address',
+                type: 'text',
+            }
+        ]
+      }
+    }
   },
   methods: {
     onFilter(filterData) {
-      console.log(filterData);
+      console.log(filterData)
     }
   }
-};
+}
 </script>
 
 <style>
