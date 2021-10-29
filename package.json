@@ -7,8 +7,13 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
     "element-ui": "^2.15.5",
+    "express": "^4.17.1",
+    "mockjs": "^1.1.0",
+    "qs": "^6.10.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {

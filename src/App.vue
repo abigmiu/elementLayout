@@ -15,7 +15,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import Filter from '@/components/filter.vue'
 import Table from '@/components/table.vue'
-
+import axios from 'axios'
 export default {
   name: 'App',
   components: {
@@ -82,41 +82,6 @@ export default {
         showSelection: true,
         showPagination: true,
         data: [
-          {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          },
-          {
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          },
-          {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          },
-          {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          },
-          {
-            date: '2016-05-08',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          },
-          {
-            date: '2016-05-06',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          },
-          {
-            date: '2016-05-07',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }
         ],
         model: [
             {
@@ -138,9 +103,17 @@ export default {
       }
     }
   },
+  created() {
+      this.fetchData();
+  },
   methods: {
     onFilter(filterData) {
       console.log(filterData)
+    },
+    fetchData() {
+        axios.get('http://localhost:4567/page').then((res) => {
+            this.tableConfig.data = res.data.data;
+        })
     }
   }
 }
