@@ -1,46 +1,44 @@
 <template>
-  <el-card class="table">
-    <!-- hader -->
+  <el-card>
+    <!-- 头部 -->
     <div
       slot="header"
-      class="flex justify-between items-center"
+      style="display: flex; justify-content: space-between; align-item: center;"
     >
-      <div class="title">{{ tableName }}</div>
-      <div
-        class="header-handler flex justify-between items-center"
-      >
-        <slot name="headerHandler"></slot>
+      <span>{{ title || '列表' }}</span>
+      <div class="flex items-center justify-between">
+        <slot></slot>
       </div>
     </div>
-    <!-- table -->
-    <el-table :data="tableData">
+    <!-- 表格· -->
+    <el-table
+      :data="data"
+      @selection-change="handleSelectionChange"
+    >
+      <!-- 复选框 -->
       <el-table-column
-        v-if="showSelection"
         type="selection"
+        v-if="showSelection"
       >
       </el-table-column>
 
       <el-table-column
-        v-for="item in propList"
-        :key="item.prop"
-        v-bind="item"
+        v-for="(item, index) in model"
+        :key="index"
+        :label="item.label"
+        :width="item.width"
+        :prop="item.value"
       >
-        <template #default="scope">
-          <slot :name="item.slotName" :scope="scope">
-            {{ scope.row[item.prop] }}
-          </slot>
-        </template>
       </el-table-column>
     </el-table>
-    <!-- paganition -->
+    <!-- 分页 -->
     <el-pagination
       v-if="showPagination"
-      :page-size="pageData.size"
-      :current-page="pageData.page"
-      :total="pageData.total"
-      @size-change="onSizeChange"
-      @current-change="onPageChange"
-      layout="total, sizes, prev, pager, next"
+      :total="pagination.total"
+      :current-page="pagination.page"
+      :page-size="pagination.size"
+      @size-change="handleSizeChange"
+      @page-change="handlePageChange"
     >
     </el-pagination>
   </el-card>
@@ -49,51 +47,65 @@
 <script>
 export default {
   props: {
-    tableName: {
-      type: String,
-      default: ''
+    // 数据
+    data: {
+      type: Array,
+      default: () => []
     },
-    showPagination: {
-      type: Boolean,
-      default: true
+    // 配置
+    model: {
+      type: Array,
+      default: () => []
     },
+    // 显示多选框
     showSelection: {
       type: Boolean,
       default: false
     },
-    pageData: {
+    // 显示分页
+    showPagination: {
+      type: Boolean,
+      default: true
+    },
+
+    // 分页数据
+    pagination: {
       type: Object,
       default: () => ({
-        page: 1,
         size: 10,
+        page: 1,
         total: 0
       })
     },
-    tableData: {
-      type: Array,
-      default: () => []
-    },
-    propList: {
-      type: Array,
-      default: () => []
+    // 标题
+    title: {
+      type: String,
+      default: ''
     }
   },
   methods: {
-    onSizeChange(size) {
-      this.$emit('sizeChange', size)
+    /**
+     * 多选框选择改变
+     */
+    handleSelectionChange(val) {
+      this.$emit('selection-change', val)
     },
-    onPageChange(page) {
-      this.$emit('pageChange', page)
+
+    /**
+     * 分页size改变
+     */
+    handleSizeChange(val) {
+      this.$emit('size-change', val)
     },
-    log(val) {
-      console.log(val)
+
+    /**
+     * 分页page改变
+     */
+    handlePageChange(val) {
+      this.$emit('page-change', val)
     }
   }
 }
 </script>
 
-<style>
-.table {
-  margin-top: 40px;
-}
-</style>
+<style></style>
