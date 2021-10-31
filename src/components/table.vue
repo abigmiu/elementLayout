@@ -5,35 +5,50 @@
       slot="header"
       style="display: flex; justify-content: space-between; align-item: center;"
     >
-      <span>{{ title || '列表' }}</span>
+      <span>{{ tableName || '列表' }}</span>
       <div class="flex items-center justify-between">
         <slot></slot>
       </div>
     </div>
     <!-- 表格· -->
     <el-table
-      :data="data"
+      :data="tableData"
       @selection-change="handleSelectionChange"
     >
       <!-- 复选框 -->
       <el-table-column
         type="selection"
-        v-if="showSelection"
+        v-if="showSelection && tableData.length"
       >
       </el-table-column>
 
       <el-table-column
-        v-for="(item, index) in model"
+        v-for="(item, index) in propList"
         :key="index"
         :label="item.label"
         :width="item.width"
-        :prop="item.value"
+        :prop="item.prop"
       >
+        <template #default="scope">
+          <!-- 图片 -->
+          <template v-if="item.type === 'image'">
+            <img :src="scope.row[item.prop]" alt="" />
+          </template>
+          <!-- 可以自己拓展 -->
+          <!-- 默认情况使用插槽 -->
+          <slot
+            v-else
+            :name="item.slotName"
+            :row="scope.row"
+          >
+            {{ scope.row[item.prop] }}
+          </slot>
+        </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
     <el-pagination
-      v-if="showPagination"
+      v-if="showPagination && pagination.total"
       :total="pagination.total"
       :current-page="pagination.page"
       :page-size="pagination.size"
@@ -48,12 +63,12 @@
 export default {
   props: {
     // 数据
-    data: {
+    tableData: {
       type: Array,
       default: () => []
     },
     // 配置
-    model: {
+    propList: {
       type: Array,
       default: () => []
     },
@@ -78,7 +93,7 @@ export default {
       })
     },
     // 标题
-    title: {
+    tableName: {
       type: String,
       default: ''
     }

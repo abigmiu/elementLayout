@@ -14,8 +14,10 @@
         <el-button type="danger">按钮2</el-button>
       </template>
 
-      <template #image="slotProp">
-        <img :src="slotProp.scope.row.image" />
+      <template #action="slotProp">
+        <el-button @click="handleClick(slotProp)">
+          按钮
+        </el-button>
       </template>
     </miu-table>
   </div>
@@ -25,7 +27,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import Filter from '@/components/filter.vue'
 import Table from '@/components/table.vue'
-import MockTableData from '@/utils/data'
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -36,6 +38,7 @@ export default {
   },
   data() {
     return {
+      // filter 配置
       filterModel: [
         {
           label: '名字',
@@ -89,10 +92,11 @@ export default {
           type: 'daterange'
         }
       ],
+      // table配置
       tableConfig: {
         tableName: '这是标题',
-        tableData: MockTableData.list,
-        pageData: {
+        tableData: [],
+        pagination: {
           page: 1,
           size: 10,
           total: 100
@@ -104,7 +108,7 @@ export default {
             label: '姓名'
           },
           {
-            prop: 'region',
+            prop: 'city',
             label: '地区'
           },
           {
@@ -118,11 +122,18 @@ export default {
           {
             prop: 'image',
             label: '图像',
-            slotName: 'image'
+            type: 'image'
+          },
+          {
+            label: '操作',
+            slotName: 'action'
           }
         ]
       }
     }
+  },
+  created() {
+    this.fetchData()
   },
   methods: {
     onFilter(filterData) {
@@ -133,6 +144,18 @@ export default {
     },
     onPageChange(page) {
       console.log(`page改变${page}`)
+    },
+    handleClick(scope) {
+      console.log(scope)
+    },
+    fetchData() {
+      axios
+        .get('http://localhost:3000/page')
+        .then((res) => {
+          this.tableConfig.tableData = res.data.data.content
+          this.tableConfig.pageData =
+            res.data.data.pagination
+        })
     }
   }
 }
