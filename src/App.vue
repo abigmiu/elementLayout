@@ -159,6 +159,7 @@ export default {
             {
                 label: '输入框',
                 value: 'input',
+                visiable: false,
                 type: 'input',
             },
             {

@@ -115,8 +115,14 @@ export default {
         init() {
             this.innerFormData = {}
             this.config.forEach((item) => {
-                // 可以根据不同情况进行赋值， 比如日期就赋值为数组
-                this.$set(this.innerFormData, item.value, this.data[item.value] || '')
+
+                if (item.visiable !== false) {
+                    this.$set(this.innerFormData, item.value, this.data[item.value] || '')
+                }
+                // 可以根据不同情况进行赋值， 比如多选可以赋值为数组
+                // if (item.type === 'select' && item.multiple) {
+                //     this.$set(this.innerFormData, item.value, this.data[item.value] || [])
+                // }
             })
         },
         /**
