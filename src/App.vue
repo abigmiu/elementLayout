@@ -6,8 +6,8 @@
     />
     <miu-table
       v-bind="tableConfig"
-      @sizeChange="onSizeChange"
-      @pageChange="onPageChange"
+      @size-change="onSizeChange"
+      @page-change="onPageChange"
     >
       <template #headerHandler>
         <el-button type="primary">按钮1</el-button>
@@ -20,6 +20,19 @@
         </el-button>
       </template>
     </miu-table>
+
+    <el-dialog :visible.sync="dialogVisiable">
+      <miu-form
+        v-bind="formConfig"
+      >
+        <template #customSlot="slotProps">
+            <el-switch v-model="slotProps.innerFormData.customSlot">
+
+            </el-switch>
+        </template>
+
+      </miu-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -27,6 +40,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import Filter from '@/components/filter.vue'
 import Table from '@/components/table.vue'
+import Form from '@/components/form.vue'
 import axios from 'axios'
 
 export default {
@@ -34,10 +48,12 @@ export default {
   components: {
     HelloWorld,
     MiuFilter: Filter,
-    MiuTable: Table
+    MiuTable: Table,
+    MiuForm: Form,
   },
   data() {
     return {
+        dialogVisiable: false,
       // filter 配置
       filterModel: [
         {
@@ -129,6 +145,48 @@ export default {
             slotName: 'action'
           }
         ]
+      },
+      formConfig: {
+          config: [
+            {
+              label: '数字框',
+              value: 'number',
+              type: 'number',
+              required: true,
+              message: '未填写数字',
+              min: 100,
+            },
+            {
+                label: '输入框',
+                value: 'input',
+                type: 'input',
+            },
+            {
+                label: '选择框',
+                type: 'select',
+                value: 'select',
+                options: [
+                    {
+                        label: '第一个',
+                        value: 'value1',
+                    },
+                    {
+                        label: '第二哥',
+                        value: 'value2',
+                    },
+                ]
+            },
+            {
+                label: '插槽',
+                value: 'customSlot',
+                slotName: 'customSlot'
+            }
+          ],
+          data: {
+            //   input: 'input data',
+            //   number: 8888,
+            //   select: 'value1'
+          }
       }
     }
   },
@@ -146,11 +204,11 @@ export default {
       console.log(`page改变${page}`)
     },
     handleClick(scope) {
-      console.log(scope)
+      this.dialogVisiable = true
     },
     fetchData() {
       axios
-        .get('http://localhost:3000/page')
+        .get('http://localhost:5678/page')
         .then((res) => {
           this.tableConfig.tableData = res.data.data.content
           this.tableConfig.pageData =
@@ -166,7 +224,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }

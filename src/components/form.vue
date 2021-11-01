@@ -7,15 +7,16 @@
             :label-width="labelWidth"
         >
             <el-form-item
-                v-for="item in items"
-                v-if="item.visiable === undefined ? true : item.visiable"
+                v-for="item in config"
+                v-show="item.visiable === undefined ? true : item.visiable"
                 :label="item.label"
                 :key="item.value"
                 :rules="item.rules || [{ required: item.required, message: item.message }]"
             >
                 <!-- 数字输入框 -->
-                <template v-if="item.type === number">
+                <template v-if="item.type === 'number'">
                     <el-input-number
+                        style="width: 100%;"
                         v-model.number="innerFormData[item.value]"
                         controls-position="right"
                         :min="item.min"
@@ -29,7 +30,7 @@
                 <template v-if="item.type === 'input' ">
                     <el-input
                         v-model="innerFormData[item.value]"
-                        :type="itme.tag"
+                        :type="item.tag || 'text'"
                         :placeholder="item.placeholder"
                         :readonly="item.readonly"
                         :row="item.row"
@@ -44,6 +45,7 @@
                 <!-- 下拉选择框 -->
                 <template v-if="item.type === 'select'">
                     <el-select
+                        style="width: 100%;"
                         v-model="innerFormData[item.value]"
                         :placeholder="item.plceholder"
                         :disabled="item.disabled"
@@ -51,8 +53,8 @@
                     >
                         <el-option
                             v-for="option in item.options"
-                            :label="item.label"
-                            :value="item.value"
+                            :label="option.label"
+                            :value="option.value"
                         >
                             <slot scope="scope"></slot>
                         </el-option>
@@ -86,6 +88,14 @@ export default {
         data: {
             type: Object,
             default: () => {}
+        },
+        labelPosition: {
+            type: String,
+            default: 'left',
+        },
+        labelWidth: {
+            type: String,
+            default: '120px',
         }
     },
     data() {
@@ -97,7 +107,7 @@ export default {
          this.init()
     },
     watch: {
-        config() {
+        data() {
             this.init()
         }
     },
@@ -106,21 +116,24 @@ export default {
             this.innerFormData = {}
             this.config.forEach((item) => {
                 // 可以根据不同情况进行赋值， 比如日期就赋值为数组
-                this.$set(this.innerFormData, item.value, '')
+                this.$set(this.innerFormData, item.value, this.data[item.value] || '')
             })
         },
         /**
          * change事件
          */
         handleChange(item) {
-            this.$emit(item, this.innerFormData)
+            this.$emit('change', item, this.innerFormData)
         },
         /**
          * 重置表单
          */
         resetForm() {
-            this.$refs.formRef.resetField()
+            this.$nextTick(() => {
+                this.$refs.formRef.resetFields ()
             this.$refs.formRef.clearValidate()
+            })
+
         },
         /**
          * 提交表单

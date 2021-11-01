@@ -13,7 +13,9 @@ import {
   Table,
   TableColumn,
   Dialog,
-  Pagination
+  Pagination,
+  InputNumber,
+  Switch
 } from 'element-ui'
 
 Vue.use(Card)
@@ -30,3 +32,5 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Dialog)
 Vue.use(Pagination)
+Vue.use(InputNumber)
+Vue.use(Switch)
